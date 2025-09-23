@@ -1,0 +1,1 @@
+📝 Prenez vos notes comme un pro — en Markdown, simplement et partout ! Une appli mobile conçue pour les étudiants : créez, éditez et organisez vos notes de cours en Markdown. Connectez-vous, écrivez avec des titres, listes et mise en forme, et retrouvez tout vos cours au même endroit. Simple, personnel, et puissant. 
