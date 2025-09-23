@@ -2,8 +2,10 @@ package com.project.notemd;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
@@ -13,8 +15,10 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 public class MainActivity extends AppCompatActivity {
-
-    Button submitButton;
+    private ProgressBar progressBar;
+    private Handler handler;
+    private int progress = 0;
+    private Runnable progressRunnable;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,16 +31,41 @@ public class MainActivity extends AppCompatActivity {
             return insets;
         });
 
-        submitButton = (Button) findViewById(R.id.submitButton);
+        progressBar = findViewById(R.id.progress);
 
+        handler = new Handler();
+
+        progressRunnable = new Runnable() {
+            @Override
+            public void run() {
+                if (progress < 100) {
+                    progress++;
+                    progressBar.setProgress(progress);
+                    handler.postDelayed(this, 200);
+                }
+            }
+        };
+
+        Button submitButton = findViewById(R.id.submitButton);
         submitButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(MainActivity.this, "login successfully!",
+                Toast.makeText(MainActivity.this, "Login successfully!",
                         Toast.LENGTH_SHORT).show();
                 startActivity(new Intent(MainActivity.this, SuccessActivity.class));
             }
         });
+    }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        handler.postDelayed(progressRunnable, 200);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        handler.removeCallbacks(progressRunnable);
     }
 }
