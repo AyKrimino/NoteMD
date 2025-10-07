@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
@@ -15,10 +16,8 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 public class MainActivity extends AppCompatActivity {
-    private ProgressBar progressBar;
-    private Handler handler;
-    private int progress = 0;
-    private Runnable progressRunnable;
+    private Button loginButton, signupButton;
+    private EditText emailInput, passwordInput;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,41 +30,42 @@ public class MainActivity extends AppCompatActivity {
             return insets;
         });
 
-        progressBar = findViewById(R.id.progress);
+        emailInput = findViewById(R.id.emailInput);
+        passwordInput = findViewById(R.id.passwordInput);
 
-        handler = new Handler();
-
-        progressRunnable = new Runnable() {
-            @Override
-            public void run() {
-                if (progress < 100) {
-                    progress++;
-                    progressBar.setProgress(progress);
-                    handler.postDelayed(this, 200);
-                }
-            }
-        };
-
-        Button submitButton = findViewById(R.id.submitButton);
-        submitButton.setOnClickListener(new View.OnClickListener() {
+        loginButton = findViewById(R.id.loginButton);
+        loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                String email = emailInput.getText().toString();
+                String password = passwordInput.getText().toString();
+
+                if (email.isEmpty() || password.isEmpty()) {
+                    Toast.makeText(MainActivity.this, "Please enter email and password"
+                            , Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                Bundle bundle = new Bundle();
+                bundle.putString("email", email);
+                bundle.putString("password", password);
+
                 Toast.makeText(MainActivity.this, "Login successfully!",
                         Toast.LENGTH_SHORT).show();
-                startActivity(new Intent(MainActivity.this, SuccessActivity.class));
+                Intent intent = new Intent(MainActivity.this, SuccessActivity.class);
+                intent.putExtras(bundle);
+                startActivity(intent);
             }
         });
-    }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-        handler.postDelayed(progressRunnable, 200);
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-        handler.removeCallbacks(progressRunnable);
+        signupButton = findViewById(R.id.goToSignup);
+        signupButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(MainActivity.this, "Signup successfully!",
+                        Toast.LENGTH_SHORT).show();
+                startActivity(new Intent(MainActivity.this, SignupActivity.class));
+            }
+        });
     }
 }
