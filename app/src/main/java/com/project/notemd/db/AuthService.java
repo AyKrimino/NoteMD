@@ -45,7 +45,7 @@ public class AuthService {
                 new String[]{email});
 
         User user = null;
-        if (cursor != null) {
+        if (cursor != null && cursor.moveToFirst()) {
             int id = cursor.getInt(0);
             String hashedPassword = cursor.getString(1);
             user = new User(id, email, hashedPassword);

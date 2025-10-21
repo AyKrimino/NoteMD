@@ -1,5 +1,6 @@
 package com.project.notemd;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -15,14 +16,13 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends Activity {
     private Button loginButton, signupButton;
     private EditText emailInput, passwordInput;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        EdgeToEdge.enable(this);
         setContentView(R.layout.activity_main);
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
@@ -64,8 +64,28 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Toast.makeText(MainActivity.this, "Signup successfully!",
                         Toast.LENGTH_SHORT).show();
-                startActivity(new Intent(MainActivity.this, SignupActivity.class));
+                //startActivity(new Intent(MainActivity.this, SignupActivity.class));
+                Bundle bundle = new Bundle();
+                bundle.putString("message", "test");
+                Intent intent = new Intent(MainActivity.this, SignupActivity.class);
+                intent.putExtras(bundle);
+
+                startActivityForResult(intent, 101);
             }
         });
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 101 && resultCode == RESULT_OK) {
+            Bundle bundle = data.getExtras();
+            String registerEmail = bundle.getString("register_email");
+            Toast.makeText(this, "test", Toast.LENGTH_SHORT).show();
+
+            if (registerEmail != null) {
+                emailInput.setText(registerEmail);
+            }
+        }
     }
 }

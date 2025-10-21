@@ -19,7 +19,6 @@ public class SuccessActivity extends AppCompatActivity {
         Bundle bundle = intent.getExtras();
 
         String email = bundle.getString("email");
-        String password = bundle.getString("password");
 
         TextView textView = findViewById(R.id.welcomeText);
         if (textView != null) {
