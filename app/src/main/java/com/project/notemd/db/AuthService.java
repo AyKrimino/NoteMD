@@ -39,16 +39,18 @@ public class AuthService {
     public User getUserByEmail(String email) {
         SQLiteDatabase db = dbHelper.getReadableDatabase();
 
-        Cursor cursor = db.rawQuery("SELECT id, password_hash FROM users WHERE " +
-                        "email =" +
-                        " ?",
+        Cursor cursor = db.rawQuery(
+                "SELECT id, email, password_hash FROM users WHERE email = ?",
                 new String[]{email});
 
         User user = null;
-        if (cursor != null && cursor.moveToFirst()) {
-            int id = cursor.getInt(0);
-            String hashedPassword = cursor.getString(1);
-            user = new User(id, email, hashedPassword);
+        if (cursor != null) {
+            if (cursor.moveToFirst()) {
+                int id = cursor.getInt(cursor.getColumnIndexOrThrow("id"));
+                String emailFound = cursor.getString(cursor.getColumnIndexOrThrow("email"));
+                String hashedPassword = cursor.getString(cursor.getColumnIndexOrThrow("password_hash"));
+                user = new User(id, emailFound, hashedPassword);
+            }
             cursor.close();
         }
 
@@ -74,5 +76,20 @@ public class AuthService {
             e.printStackTrace();
             return null;
         }
+    }
+
+    public boolean authenticate(String email, String password) {
+        User user = getUserByEmail(email);
+        if (user == null) {
+            return false;
+        }
+
+        String storedHash = user.getPasswordHash();
+        String currHash = hashPassword(password);
+
+        if (currHash == null) {
+            return false;
+        }
+        return currHash.equals(storedHash);
     }
 }

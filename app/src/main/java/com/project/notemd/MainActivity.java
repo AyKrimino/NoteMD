@@ -16,9 +16,12 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.project.notemd.db.AuthService;
+
 public class MainActivity extends Activity {
     private Button loginButton, signupButton;
     private EditText emailInput, passwordInput;
+    private AuthService authService;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,6 +33,8 @@ public class MainActivity extends Activity {
             return insets;
         });
 
+        authService = new AuthService(this);
+
         emailInput = findViewById(R.id.emailInput);
         passwordInput = findViewById(R.id.passwordInput);
 
@@ -37,12 +42,18 @@ public class MainActivity extends Activity {
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String email = emailInput.getText().toString();
+                String email = emailInput.getText().toString().trim();
                 String password = passwordInput.getText().toString();
 
                 if (email.isEmpty() || password.isEmpty()) {
                     Toast.makeText(MainActivity.this, "Please enter email and password"
                             , Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                boolean ok = authService.authenticate(email, password);
+                if (!ok) {
+                    Toast.makeText(MainActivity.this, "Invalid email or password", Toast.LENGTH_SHORT).show();
                     return;
                 }
 

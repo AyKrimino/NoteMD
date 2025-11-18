@@ -18,13 +18,18 @@ public class SuccessActivity extends AppCompatActivity {
         Intent intent = getIntent();
         Bundle bundle = intent.getExtras();
 
-        String email = bundle.getString("email");
+        String email = null;
+        if (bundle != null) {
+            email = bundle.getString("email");
+        }
 
         TextView textView = findViewById(R.id.welcomeText);
         if (textView != null) {
-            textView.setText("Welcome, " + email + "!");
-        } else {
-            textView.setText("Welcome!");
+            if (email != null && !email.isEmpty()) {
+                textView.setText("Welcome, " + email + "!");
+            } else {
+                textView.setText("Welcome!");
+            }
         }
     }
 }
