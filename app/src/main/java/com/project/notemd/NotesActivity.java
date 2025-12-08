@@ -32,13 +32,17 @@ public class NotesActivity extends AppCompatActivity {
         notesList = findViewById(R.id.notesList);
         Button addBtn = findViewById(R.id.addNoteBtn);
 
-        loadNotes();
-
         addBtn.setOnClickListener(v -> {
             Intent i = new Intent(NotesActivity.this, CreateNoteActivity.class);
             i.putExtra("user_id", userId);
             startActivity(i);
         });
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        loadNotes();
     }
 
     private void loadNotes() {
