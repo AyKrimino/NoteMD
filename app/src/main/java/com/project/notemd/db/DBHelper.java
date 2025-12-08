@@ -6,7 +6,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 public class DBHelper extends SQLiteOpenHelper {
     private static final String DATABASE_NAME = "NoteMD.db";
-    private static final int DATABASE_VERSION = 1;
+    private static final int DATABASE_VERSION = 2;
     private static final String SQL_CREATE_USER_TABLE =
             "CREATE TABLE users (" +
                     "id INTEGER PRIMARY KEY AUTOINCREMENT, " +

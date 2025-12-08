@@ -22,6 +22,8 @@
         </activity>
         <activity android:name=".SuccessActivity" />
         <activity android:name=".SignupActivity" />
+        <activity android:name=".NotesActivity" />
+        <activity android:name=".CreateNoteActivity" />
     </application>
 
 </manifest>

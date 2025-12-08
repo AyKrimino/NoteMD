@@ -2,6 +2,7 @@ package com.project.notemd.db;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
 import java.util.ArrayList;
@@ -44,12 +45,12 @@ public class NotesService {
                         c.getString(c.getColumnIndexOrThrow("created_at")),
                         c.getString(c.getColumnIndexOrThrow("updated_at"))
                 );
-                list.add(note);
+                res.add(note);
             }
             c.close();
         }
         db.close();
-        return list;
+        return res;
     }
 
     public void updateNote(int id, String title, String content) {
