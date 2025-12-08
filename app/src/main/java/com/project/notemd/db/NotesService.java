@@ -69,4 +69,28 @@ public class NotesService {
         db.delete("notes", "id=?", new String[]{String.valueOf(id)});
         db.close();
     }
+
+    public Note getNoteById(int id) {
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+
+        Cursor c = db.rawQuery("SELECT * FROM notes WHERE id = ?", new String[]{String.valueOf(id)});
+
+        if (c.moveToFirst()) {
+            Note note = new Note(
+                    c.getInt(c.getColumnIndexOrThrow("id")),
+                    c.getInt(c.getColumnIndexOrThrow("user_id")),
+                    c.getString(c.getColumnIndexOrThrow("title")),
+                    c.getString(c.getColumnIndexOrThrow("content")),
+                    c.getString(c.getColumnIndexOrThrow("created_at")),
+                    c.getString(c.getColumnIndexOrThrow("updated_at"))
+            );
+            c.close();
+            db.close();
+            return note;
+        }
+
+        c.close();
+        db.close();
+        return null;
+    }
 }

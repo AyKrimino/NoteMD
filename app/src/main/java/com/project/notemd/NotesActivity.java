@@ -55,5 +55,13 @@ public class NotesActivity extends AppCompatActivity {
                 new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, titles);
 
         notesList.setAdapter(adapter);
+
+        notesList.setOnItemClickListener(((parent, view, position, id) -> {
+            Note clickedNote = list.get(position);
+
+            Intent i = new Intent(NotesActivity.this, NoteDetailsActivity.class);
+            i.putExtra("note_id", clickedNote.getId());
+            startActivity(i);
+        }));
     }
 }
