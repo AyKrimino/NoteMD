@@ -47,7 +47,7 @@ This project focuses on learning mobile development fundamentals using **Java**,
 1. Clone the repository:
 
    ```bash
-   git clone <repo-link>
+   git clone https://github.com/AyKrimino/NoteMD.git
    ```
 2. Open the project in **Android Studio**
 3. Wait for Gradle to sync
